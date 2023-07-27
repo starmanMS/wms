@@ -38,7 +38,7 @@
 
 #### 1.用户管理(查询用户、添加用户、修改用户、删除用户、导出数据、批量删除、禁用/启用用户、重置密码、分配角色、更改权限)
 
-![image](https://github.com/starmanMS/VMS/blob/main/screenshot/wh-user-list.jpg)
+![image](https://github.com/starmanMS/VMS/blob/main/screenshots/wh-user-list.jpg)
 
 #### 2.角色管理(查询角色、添加角色、修改角色、删除角色、导出数据、禁用/启用角色、更改权限)
 
