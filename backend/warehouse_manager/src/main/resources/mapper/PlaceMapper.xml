@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ms.mapper.PlaceMapper">
+<!--
+ //查询所有产地的方法
+ public List<Place> findAllPlace();
+-->
+  <select id="findAllPlace" resultType="com.ms.entity.Place">
+    select * from place where is_delete = 0
+  </select>
+</mapper>

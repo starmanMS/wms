@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ms.mapper.BrandMapper">
+
+  <!--
+   //查询所有品牌的方法
+    public Result findAllBrand();
+  -->
+  <select id="findAllBrand" resultType="com.ms.entity.Brand">
+    select * from brand;
+  </select>
+</mapper>

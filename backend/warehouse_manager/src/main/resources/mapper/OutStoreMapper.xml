@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ms.mapper.OutStoreMapper">
+
+<!--
+ //添加出库单的方法
+    public int insertOutStore(OutStore outStore);
+-->
+  <insert id="insertOutStore">
+    insert into out_store values (
+                                 null, #{productId}, #{storeId}, null,
+                                 #{salePrice}, #{outNum}, #{createBy}, now(), 0
+                                 )
+  </insert>
+
+    <!--
+    //查询出库单行数的方法
+    public Integer findOutStoreCount(OutStore outStore);
+    -->
+    <select id="findOutStoreCount" resultType="integer">
+        select count(*) from out_store t1, product t2
+        where t1.product_id = t2.product_id
+        <if test="storeId != null">
+            and t1.store_id = #{storeId}
+        </if>
+        <if test="productName != null and productName != ''">
+            and t2.product_name like concat('%', #{productName},'%')
+        </if>
+        <if test="isOut != null and isOut != ''">
+            and t1.is_out = #{isOut}
+        </if>
+        <if test="startTime != null and startTime != ''">
+            and t1.create_time &gt;=#{startTime}
+        </if>
+        <if test="endTime != null and endTime != ''">
+            and t1.create_time &lt;=#{endTime}
+        </if>
+    </select>
+
+    <!--
+     //分页查询出库单的方法
+    public List<OutStore> findOutStorePage(@Param("page") Page page, @Param("outStore") OutStore outStore);
+    -->
+    <select id="findOutStorePage" resultType="com.ms.entity.OutStore">
+        select t1.*, t2.product_name, t3.store_name, t4.user_code
+        from out_store t1, product t2, store t3, user_info t4
+        where t1.product_id = t2.product_id and t1.store_id = t3.store_id and t1.create_by = t4.user_id
+        <if test="outStore.storeId != null">
+            and t1.store_id = #{outStore.storeId}
+        </if>
+        <if test="outStore.productName != null and outStore.productName != ''">
+            and t2.product_name like concat('%', #{outStore.productName},'%')
+        </if>
+        <if test="outStore.isOut != null and outStore.isOut != ''">
+            and t1.is_out = #{outStore.isOut}
+        </if>
+        <if test="outStore.startTime != null and outStore.startTime != ''">
+            and t1.create_time &gt;=#{outStore.startTime}
+        </if>
+        <if test="outStore.endTime != null and outStore.endTime != ''">
+            and t1.create_time &lt;=#{outStore.endTime}
+        </if>
+        order by t1.create_time desc
+        limit #{page.limitIndex}, #{page.pageSize}
+    </select>
+
+    <!--
+    //根据id修改出库单状态的方法
+    public int setIsOutById(Integer outStoreId);
+    -->
+    <update id="setIsOutById">
+        update out_store set is_out = 1 where outs_id = #{outStoreId}
+    </update>
+
+</mapper>

@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ms.mapper.ProductMapper">
+<!--
+    //查询商品行数的方法
+    public Integer findProductRowCount(Product product);
+
+-->
+  <select id="findProductRowCount" resultType="integer">
+    select count(*)
+    from product t1, brand t2, product_type t3, supply t4, place t5
+    where t1.brand_id = t2.brand_id and t1.type_id = t3.type_id
+    and t1.supply_id = t4.supply_id and t1.place_id = t5.place_id
+    <if test="storeId != null ">
+      and t1.store_id = #{storeId}
+    </if>
+    <if test="productName != null and productName != ''">
+      and t1.product_name like concat('%', #{productName}, '%')
+    </if>
+    <if test="brandName != null and brandName != ''">
+      and t2.brand_name like concat('%', #{brandName}, '%')
+    </if>
+    <if test="typeName != null and typeName != ''">
+      and t3.type_name like concat('%', #{typeName}, '%')
+    </if>
+    <if test="supplyName != null and supplyName != ''">
+      and t4.supply_name like concat('%', #{supplyName}, '%')
+    </if>
+    <if test="placeName != null and placeName != ''">
+      and t5.place_name like concat('%', #{placeName}, '%')
+    </if>
+    <if test="upDownState != null and upDownState != ''">
+      and t1.up_down_state like concat('%', #{upDownState}, '%')
+    </if>
+    <if test="isOverDate == 1">
+      and t1.supp_date &lt;= now()
+    </if>
+    <if test="isOverDate == 0">
+      and t1.supp_date &gt;= now()
+    </if>
+  </select>
+
+   <!--
+    //分页查询商品的方法
+    public List<Product> findProductPage(@Param("page") Page page, @Param("product") Product product);
+   -->
+  <select id="findProductPage" resultType="com.ms.entity.Product">
+    select t1.*, t2.brand_name brandName, t3.type_name typeName,
+    t4.supply_name supplyName, t5.place_name placeName,
+    t6.unit_name unitName, t7.store_name storeName
+    from product t1, brand t2, product_type t3, supply t4, place t5,
+    unit t6, store t7
+    where t1.brand_id = t2.brand_id and t1.type_id = t3.type_id
+    and t1.supply_id = t4.supply_id and t1.place_id = t5.place_id
+    and t1.unit_id = t6.unit_id and t1.store_id = t7.store_id
+    <if test="product.storeId != null ">
+      and t1.store_id = #{product.storeId}
+    </if>
+    <if test="product.productName != null and product.productName != ''">
+      and t1.product_name like concat('%', #{product.productName}, '%')
+    </if>
+    <if test="product.brandName != null and product.brandName != ''">
+      and t2.brand_name like concat('%', #{product.brandName}, '%')
+    </if>
+    <if test="product.typeName != null and product.typeName != ''">
+      and t3.type_name like concat('%', #{product.typeName}, '%')
+    </if>
+    <if test="product.supplyName != null and product.supplyName != ''">
+      and t4.supply_name like concat('%', #{product.supplyName}, '%')
+    </if>
+    <if test="product.placeName != null and product.placeName != ''">
+      and t5.place_name like concat('%', #{product.placeName}, '%')
+    </if>
+    <if test="product.upDownState != null and product.upDownState != ''">
+      and t1.up_down_state like concat('%', #{product.upDownState}, '%')
+    </if>
+    <if test="product.isOverDate == 1">
+      and t1.supp_date &lt;= now()
+    </if>
+    <if test="product.isOverDate == 0">
+      and t1.supp_date &gt;= now()
+    </if>
+    order by t1.create_time desc
+    limit #{page.limitIndex}, #{page.pageSize}
+  </select>
+
+  <!--
+    //根据型号查询商品的方法
+    public Product findProductByNum(String productNum);
+  -->
+  <select id="findProductByNum" resultType="com.ms.entity.Product">
+    select * from product where product_num = #{productNum}
+  </select>
+
+
+  <!--
+    //添加商品的方法
+    public int insertProduct(Product product);
+  -->
+  <insert id="insertProduct">
+    insert into product
+    values (
+    		null, #{storeId}, #{brandId}, #{productName}, #{productNum},
+    		#{productInvent}, #{typeId}, #{supplyId}, #{placeId}, #{unitId},
+    		#{introduce}, 0, #{inPrice}, #{salePrice}, #{memPrice}, now(),
+    		null, #{createBy}, null, #{imgs}, #{productDate}, #{suppDate}
+           )
+  </insert>
+
+  <!--
+   //根据商品id修改商品上下架状态的方法
+    public int setProductState(Integer productId, String upDownState);
+  -->
+  <update id="setProductState">
+  update product set up_down_state = #{param2} where product_id = #{param1}
+  </update>
+
+  <!--
+   //根据商品id删除商品的方法
+    public int removeProductByIds(List<Integer> productIdList);
+  -->
+  <delete id="removeProductByIds">
+    delete from product
+    where product_id in
+    <foreach collection="list" open="(" close=")" separator="," item="productId">
+      #{productId}
+    </foreach>
+  </delete>
+
+  <!--
+   //根据商品id修改商品的方法
+    public int setProductById(Product product);
+  -->
+  <update id="setProductById">
+    update product
+    set
+    store_id = #{storeId}, brand_id = #{brandId}, product_name = #{productName},
+    product_num = #{productNum}, product_invent = #{productInvent}, type_id = #{typeId},
+    supply_id = #{supplyId}, place_id = #{placeId}, unit_id = #{unitId}, introduce = #{introduce},
+    in_price = #{inPrice}, sale_price = #{salePrice}, mem_price = #{memPrice}, update_time = now(),
+    update_by = #{updateBy}, imgs = #{imgs}, product_date = #{productDate}, supp_date = #{suppDate}
+    where product_id = #{productId}
+  </update>
+
+    <!--
+  //根据商品id修改商品库存的方法
+  public int setInventById(Integer productId, Integer invent);
+  -->
+  <update id="setInventById">
+    update product set product_invent = product_invent + #{param2} where product_id = #{param1}
+  </update>
+
+  <!--
+   //根据商品id查询库存的方法
+    public int findInventById(Integer productId);
+  -->
+  <select id="findInventById" resultType="integer">
+    select product_invent from product where product_id = #{productId}
+  </select>
+
+</mapper>

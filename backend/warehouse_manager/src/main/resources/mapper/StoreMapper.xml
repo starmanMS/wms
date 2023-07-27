@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ms.mapper.StoreMapper">
+
+
+  <!--
+  //查询所有仓库的方法
+    public List<Store> findAllStore();
+  -->
+  <select id="findAllStore" resultType="com.ms.entity.Store">
+    select * from store
+  </select>
+
+  <!--
+  //查询每个仓库的商品数量
+  public List<StoreCountVo> findStoreCount();
+  -->
+  <select id="findStoreCount" resultType="com.ms.vo.StoreCountVo">
+    select t1.store_id, t1.store_name, ifnull(sum(product_invent), 0) totalInvent
+    from store t1, product t2
+    where t1.store_id = t2.store_id
+    group by t1.store_id, t1.store_name
+  </select>
+
+</mapper>

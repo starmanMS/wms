@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ms.mapper.ProductTypeMapper">
+
+  <!--
+    //查询商品分类树的方法
+    public List<ProductType> findAllProductType();
+  -->
+  <select id="findAllProductType" resultType="com.ms.entity.ProductType">
+    select * from product_type
+  </select>
+
+  <!--
+    //根据分类编码或分类名称查询商品分类的方法
+      public ProductType findTypeByNameOrCode(ProductType productType);
+  -->
+  <select id="findTypeByNameOrCode" resultType="com.ms.entity.ProductType">
+    select * from product_type
+    <where>
+      <if test="typeName != null and typeName != ''">
+        or type_name = #{typeName}
+      </if>
+      <if test="typeCode != null and typeCode != ''">
+        or type_code = #{typeCode}
+      </if>
+    </where>
+  </select>
+
+  <!--
+  //添加商品分类的方法
+    public int insertProductType(ProductType productType);
+  -->
+  <insert id="insertProductType">
+    insert into product_type values (null, #{parentId}, #{typeCode}, #{typeName}, #{typeDesc})
+  </insert>
+
+  <!--
+   //根据商品id删除商品分类的方法
+    public int removeProductTypeById(Integer typeId);
+  -->
+  <delete id="removeProductTypeById">
+    delete from product_type where type_id = #{typeId}
+  </delete>
+
+  <!--
+   //根据分类id修改商品分类的方法
+    public int modifyProductTypeById(ProductType productType);
+  -->
+  <update id="modifyProductTypeById">
+    update product_type
+    set type_name = #{typeName}, type_desc = #{typeDesc}
+    where type_id = #{typeId}
+  </update>
+
+</mapper>

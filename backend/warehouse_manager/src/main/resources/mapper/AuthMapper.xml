@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ms.mapper.AuthMapper">
+
+<!--
+* 根据userId查询用户权限下的所有菜单的方法
+* public List<Auth> findAuthByUid(Integer userId)
+-->
+
+  <select id="findAuthByUid" resultType="com.ms.entity.Auth">
+    select *
+    from user_role t1, role_auth t2, auth_info t3
+    where t1.role_id = t2.role_id
+    and t2.auth_id = t3.auth_id
+    and t3.auth_state = 1
+    and t3.auth_type != 3
+    and t1.user_id = #{userId}
+  </select>
+
+
+  <!--
+    //查询所有角色权限的方法
+    public List<Auth> findAllAuth();
+  -->
+  <select id="findAllAuth" resultType="com.ms.entity.Auth">
+    select * from auth_info where auth_state = 1 and auth_type != 3
+  </select>
+
+
+</mapper>
