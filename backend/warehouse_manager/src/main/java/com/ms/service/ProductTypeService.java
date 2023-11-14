@@ -2,7 +2,6 @@ package com.ms.service;
 
 import com.ms.entity.ProductType;
 import com.ms.entity.Result;
-import org.apache.ibatis.executor.ResultExtractor;
 
 import java.util.List;
 

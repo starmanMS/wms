@@ -1,7 +1,6 @@
 package com.ms.service;
 
 import com.ms.entity.Brand;
-
 import java.util.List;
 
 public interface BrandService{

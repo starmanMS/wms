@@ -1,7 +1,6 @@
 package com.ms.mapper;
 
 import com.ms.entity.Auth;
-
 import java.util.List;
 
 /*
