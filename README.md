@@ -1,8 +1,11 @@
 ## Warehouse Management System（仓库管理系统）
 
+### 问题加QQ群： 642606174
+
 ### 前言
 
 - **项目为前后端分离项目，采用的技术包括SpringBoot + MyBatis + MySql + Redis + Vue + Axios + Element-Plus + Echarts等。**
+
 
 ### 项目启动
 
