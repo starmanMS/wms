@@ -74,5 +74,3 @@
 #### 9.统计管理(各个仓库库存信息、仓库占有比、仓库存储走势、出入库信息统计、采购量占比、实时数据监测)
 
 ![](https://cdn.jsdelivr.net/gh/starmanMS/blog-images@main/img/wh-total-chart.jpg)
-
-**作者主页**：https:mirrorseek.com
